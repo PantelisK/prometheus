@@ -7,4 +7,4 @@ scrape_configs:
       - targets: ["localhost:9090"]
   - job_name: simple_server
     static_configs:
-      - targets: ["localhost:8081"]
+      - targets: ["35.228.201.208:8081"]

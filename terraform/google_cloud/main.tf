@@ -5,13 +5,13 @@ variable "project_name" {
 
 variable "port_number" {
   type = string
-  default = "8081"
+  default = "9090"
 }
 
 variable "docker_declaration" {
   type = string
   # Change the image: string to match the docker image you want to use
-  default = "spec:\n  containers:\n    - name: test-docker\n      image: 'pant7/get-dummypdf'\n      stdin: false\n      tty: false\n  restartPolicy: Always\n"
+  default = "spec:\n  containers:\n    - name: test-docker\n      image: 'pant7/prometheus:latest'\n      stdin: false\n      tty: false\n  restartPolicy: Always\n"
 }
 
 variable "boot_image_name" {
@@ -31,12 +31,12 @@ data "google_compute_network" "default" {
   name = "default"
 }
 
-resource "google_compute_instance" "getdummy" {
-  name = "getdummy"
+resource "google_compute_instance" "prom" {
+  name = "prom"
   machine_type = "g1-small"
   zone = "europe-north1-b"
   tags =[
-      "name","getdummy"
+      "name","prom"
   ]
 
   boot_disk {
@@ -64,12 +64,12 @@ resource "google_compute_instance" "getdummy" {
 }
 
 output "Public_IP_Address" {
-  value = google_compute_instance.getdummy.network_interface[0].access_config[0].nat_ip
+  value = google_compute_instance.prom.network_interface[0].access_config[0].nat_ip
 }
 
 
-resource "google_compute_firewall" "http-8081" {
-  name = "http-8081"
+resource "google_compute_firewall" "http-9090" {
+  name = "http-9090"
   network = data.google_compute_network.default.name
 
   allow {
